@@ -43,7 +43,7 @@ do{
                 cout<<"\n---Lista completa--- "<<endl<<endl;
                 cout<< l1.Show_list()<<endl<<endl;
                 break;
-        case 3:{ // Lanza error cuando no encuentra el dato
+        case 3:{
                 string code;
                 cout<< "\n---Eliminacion de estudiante---" << endl; 
                 cout<<"Ingresa de favor el codigo del alumno: ";cin>>code;
@@ -51,7 +51,7 @@ do{
                 cin.ignore();
                 break;
                 }
-        case 4:{ //Lanza error con la lista vacia
+        case 4:{
                 string code;
                 cout<< "\n---Mostrar estudiante---" << endl; 
                 cout<<"Ingresa de favor el codigo del alumno: ";cin>>code;
@@ -94,5 +94,7 @@ do{
 }while (opc!=0); 
     return 0;
 }
+
+
 
 
