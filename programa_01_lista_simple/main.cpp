@@ -30,7 +30,7 @@ do{
     switch (opc){
         case 1:{
                 string Name,Code,Career,Grade;
-                cout<< "---Registro de estudiante---" << endl;
+                cout<< "\n---Registro de estudiante---" << endl;
                 cout << "Ingresa el nombre: "; getline(cin,Name);
                 cout << "Ingresa el codigo: "; getline(cin,Code);
                 cout << "Ingresa la carrera: "; getline(cin,Career);
@@ -40,57 +40,57 @@ do{
                 break;
                 }   
         case 2:
-                cout<<"---Lista completa--- "<<endl;
-                cout<< l1.Show_list();
+                cout<<"\n---Lista completa--- "<<endl<<endl;
+                cout<< l1.Show_list()<<endl<<endl;
                 break;
         case 3:{ // Lanza error cuando no encuentra el dato
                 string code;
-                cout<< "---Eliminacion de estudiante---" << endl; 
-                cout<<"Ingresa de favor el codigo del alumno";cin>>code;
+                cout<< "\n---Eliminacion de estudiante---" << endl; 
+                cout<<"Ingresa de favor el codigo del alumno: ";cin>>code;
                 l1.Delete(code);
+                cin.ignore();
                 break;
                 }
         case 4:{ //Lanza error con la lista vacia
                 string code;
-                cout<< "---Mostrar estudiante---" << endl; 
-                cout<<"Ingresa de favor el codigo del alumno";cin>>code;
+                cout<< "\n---Mostrar estudiante---" << endl; 
+                cout<<"Ingresa de favor el codigo del alumno: ";cin>>code;
                 cout<<endl<<l1.Show_Data(code)<<endl;
-                cin.get();
+                cin.ignore();
                 break;
                 }
         case 5:
-                cout<< "---Eliminacion de lista---" << endl;
+                cout<< "\n---Eliminacion de lista---" << endl;
                 l1.Clear();
-                cin.get();
                 break;
         case 6: 
-                cout<< "---Mostrando primera posicion---" << endl;
+                cout<< "\n---Mostrando primera posicion---" << endl;
                 if(l1.Empty())
                     cout<<"La lista esta vacia"<<endl;
                 else
                     cout<<"\n"<<l1.First()->get_Data_show()<<endl;
                 break;
         case 7: 
-                cout<< "---Mostrando ultima posicion---" << endl; 
+                cout<< "\n---Mostrando ultima posicion---" << endl; 
                 if(l1.Empty())
                     cout<<"La lista esta vacia"<<endl;
                 else
                     cout<<l1.Last()->get_Data_show()<<endl;
                 break;
         case 8:
-                cout<< "---Guardando datos---" << endl;
+                cout<< "\n---Guardando datos---" << endl;
                 l1.Save();
                 break;
         case 0:
-                cout<<"VUELVA PRONTO"<<endl;
+                cout<<"\n---VUELVA PRONTO---"<<endl;
                 break;
         default:
-                cout<<"Opcion no valida"<<endl;
+                cout<<"\n---OPCION NO VALIDA---"<<endl;
                 break;
     } 
-    cout<<endl<<"Enter para continuar...";
-    cin.get();
-    system("cls");
+    cout<<"\nEnter para continuar..."<<endl;
+    cin.ignore();
+    system("clear");
 }while (opc!=0); 
     return 0;
 }
