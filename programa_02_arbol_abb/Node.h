@@ -70,5 +70,7 @@ void Node::show(){
 }
 
 string Node::save_student(){
-    return student->toString_save();
+    string data;
+    data = student->get_Name() + "|" + student->get_Code() + "|" + student->get_Career() + "|" + to_string(student->get_Grade()) + "*";
+    return data;
 }

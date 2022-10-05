@@ -20,11 +20,11 @@ int main(){
     cout<<"Ingrese opcion >> ";
     cin >> opcion;
     cin.ignore();
-        
-    string modoBusqueda;
+
     string name;
     string code;
     string career;
+    Node* aux;
     float grade;
     bool retry,retry2;
 		
@@ -36,14 +36,20 @@ int main(){
         cout << "Ingrese el codigo del estudiante: "; getline(cin,code);
         cout << "Ingrese la carrera del estudiante: "; getline(cin,career);
         cout << "Ingrese la calificación del estudiante: "; cin >> grade;
-        tree->insertRoot(name,code,career,grade);
+        tree->insert(name,code,career,grade,tree->getRoot());
         system("pause");
         break;
       case 2:
         system("cls");
         cout << "\n\n BUSCAR NODO \n\n";
-        cout << "Ingrese el nombre del estudiante: "; getline(cin,name);
-        tree->searchNameRoot(name);
+        cout << "Ingrese el codigo del estudiante: "; getline(cin,code);
+        tree->search(tree->getRoot(),code,aux);
+        if(aux){
+          aux->show();
+        }
+        else{
+          cout << "No se encontro el estudiante" << endl;
+        }
 				break;
 			case 3:{
           system("cls");
@@ -61,7 +67,7 @@ int main(){
       }
 			case 4:{
           system("cls");
-          cout << "\n\n MOSTRAR MAXIMO \n\n";
+          cout << "\n\n MOSTRAR CALIFICACION MAS ALTA \n\n";
 
           Node* max = tree->max();
           if (max)
@@ -75,26 +81,31 @@ int main(){
 			  case 5:
             system("cls");
             cout << "\n\n ELIMINAR NODO \n\n";
-            cout<<"\nIndique la calificacion >> ";
-            cin>>grade;
-            tree->setRoot(tree->deleteNode(tree->getRoot(),grade));
+            cout << "Ingrese el codigo del estudiante a eliminar: "; getline(cin,code);
+            tree->search(tree->getRoot(),code,aux);
+            if(aux){
+              tree->setRoot(tree->deleteNode(tree->getRoot(),aux->get_Student()->get_Grade()));
+            }
+            else{
+              cout << "No se encontro el estudiante" << endl;
+            }
 				    break;
 			  case 6:
           system("cls");
           cout << "\n\n ORDEN \n\n";
-          tree->inOrderPrintRoot();
+          tree->inOrderPrint(tree->getRoot());
           system("pause");
 				  break;
 			  case 7:
           system("cls");
           cout << "\n\n PREORDEN \n\n";
-          tree->preOrderPrintRoot();
+          tree->preOrderPrint(tree->getRoot());
           system("pause");
           break;
 			  case 8:
           system("cls");
           cout << "\n\n POSTORDEN \n\n";
-          tree->postOrderPrintRoot();
+          tree->postOrderPrint(tree->getRoot());
           system("pause");
           break;
         case 9:
