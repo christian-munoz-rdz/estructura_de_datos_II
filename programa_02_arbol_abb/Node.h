@@ -9,6 +9,7 @@ private:
     Node* right;
 public:
     Node(string,string,string,float);
+    ~Node();
 
     //Metodos Get
     Student* get_Student();
@@ -21,12 +22,17 @@ public:
     void set_Right(Node*);
 
     void show();
+    string save_student();
 };
 
 Node::Node(string Name,string Code,string Career,float Grade){
     student= new Student(Name,Code,Career,Grade);
     left = NULL;
     right = NULL;
+}
+
+Node::~Node(){
+    cout<<"Alumno eliminado"<<endl;
 }
 
 //Metodos Get
@@ -63,3 +69,6 @@ void Node::show(){
     cout << endl;
 }
 
+string Node::save_student(){
+    return student->toString_save();
+}

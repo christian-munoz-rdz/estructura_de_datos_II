@@ -2,7 +2,8 @@
 
 int main(){
   Btree* tree = new Btree();
-  int opcion = 0;	
+  tree->Load();
+  int opcion;	
   do{
     system("cls");  
     cout<<"OPCIONES"<<endl
@@ -14,7 +15,8 @@ int main(){
     <<"6)Mostrar datos en Orden"<<endl
     <<"7)Mostrar datos en preorden"<<endl
     <<"8)Mostrar datos en postorden"<<endl
-    <<"9)Salir"<<endl;
+    <<"9)Guardar datos"<<endl
+    <<"0)Salir"<<endl;
     cout<<"Ingrese opcion >> ";
     cin >> opcion;
     cin.ignore();
@@ -96,13 +98,17 @@ int main(){
           system("pause");
           break;
         case 9:
+          cout << "\n\n GUARDAR DATOS \n\n";
+          tree->Save();
+          break;
+        case 0:
           cout<<"Saliendo..."<<endl;
           system("pause");
           break;
 			  default:
 				  cout<<"Ingrese opcion valida"<<endl;
 		}
-	}while(opcion!= 9);
+	}while(opcion!=0);
 
   return 0;
 }

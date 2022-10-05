@@ -28,6 +28,8 @@ public:
     string get_Career();
     float get_Grade();
 
+    // Metodos toString
+    string toString_save();
 };
 
 // Constructor de la clase recibe 4 parametros de tipo string
@@ -88,4 +90,13 @@ string Student::get_Career(){
 // get_Grade retorna el promedio del estudiante
 float Student::get_Grade(){
     return Grade;
+}
+
+// Metodos toString
+
+// toString_save retorna un string con los datos del estudiante
+string Student::toString_save(){
+    string data;
+    data+=Name+"|"+Code+"|"+Career+"|"+to_string(Grade)+"|"+"*";
+    return data;
 }

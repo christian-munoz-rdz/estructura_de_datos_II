@@ -1,4 +1,6 @@
 #include "Node.h"
+#include<fstream>
+#include<string>
 
 class Btree{
 private:
@@ -7,6 +9,8 @@ public:
 
     Btree();
     ~Btree();
+
+    bool Empty();
 
     Node* getRoot();
     void setRoot(Node*);
@@ -35,10 +39,20 @@ public:
 
     void postOrderPrintRoot();
     void postOrderPrint(Node*);
+
+    void to_stringRoot(string&);
+    void to_string(Node*,string&);
+    void Save();
+    void Fields(string&);
+    void Load();
 };
 
 Btree::Btree(){
     root = NULL;
+}
+
+bool Btree::Empty(){
+    return root == NULL;
 }
 
 Node* Btree::getRoot(){
@@ -281,5 +295,111 @@ void Btree::postOrderPrint(Node* leaf){
         inOrderPrint(leaf->get_Left());
         inOrderPrint(leaf->get_Right());
         leaf->show();
+    }
+}
+
+void Btree::to_stringRoot(string& text){
+    if (root){
+        to_string(root,text);
+    }
+    else
+        cout<<"Arbol vacio"<<endl;
+}
+
+void Btree::to_string(Node* leaf, string& text){
+    if (leaf){
+        to_string(leaf->get_Left(),text);
+        text += leaf->save_student();
+        to_string(leaf->get_Right(),text);
+    }
+}
+
+void Btree::Save(){
+    string text = "";
+    to_stringRoot(text);
+
+    ofstream file;
+    file.open("file01.txt",ios::out);
+
+    if(file.fail()){
+        cout<<"No se pudo abrir el archivo"<<endl;
+        exit(1);
+    }
+    file<<text;
+    file.close();
+}
+
+void Btree::Fields(string& record){
+    int i=0;
+
+    string name = "";
+
+    while(record[i] != '|'){
+        name += record[i];
+        i++;
+    }
+
+    i++;
+
+    string code = "";
+
+    while(record[i] != '|'){
+        code += record[i];
+        i++;
+    }
+
+    i++;
+
+    string career = "";
+
+    while(record[i] != '|'){
+        career += record[i];
+        i++;
+    }
+
+    i++;
+
+    string grade = "";
+
+    while(record[i] != '|'){
+        grade += record[i];
+        i++;
+    }
+
+    insertRoot(name,code,career,stof(grade));
+}
+
+void Btree::Load(){
+    Node* leaf = root;
+
+    ifstream file;
+
+    file.open("file01.txt",ios::in);
+
+    if(file.is_open()){
+        file.seekg(0,file.end);
+        int size = file.tellg();
+        file.seekg(0,file.beg);
+
+        char* buffer = new char[size];
+
+        file.read(buffer,size);
+        int i=0;
+        string record = "";
+
+        while(i<size){
+            if(buffer[i] != '*'){
+                record += buffer[i];
+            }
+            else{
+                Fields(record);
+                record = "";
+            }
+            i++;
+        }
+        file.close();
+    }
+    else{
+        return;
     }
 }
