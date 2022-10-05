@@ -50,6 +50,7 @@ int main(){
         else{
           cout << "No se encontro el estudiante" << endl;
         }
+        system("pause");
 				break;
 			case 3:{
           system("cls");
@@ -89,6 +90,7 @@ int main(){
             else{
               cout << "No se encontro el estudiante" << endl;
             }
+            system("pause");
 				    break;
 			  case 6:
           system("cls");
@@ -109,15 +111,18 @@ int main(){
           system("pause");
           break;
         case 9:
+          system("cls");
           cout << "\n\n GUARDAR DATOS \n\n";
           tree->Save();
+          cout << "Datos guardaros con exito" << endl;
+          system("pause");
           break;
         case 0:
           cout<<"Saliendo..."<<endl;
-          system("pause");
           break;
 			  default:
 				  cout<<"Ingrese opcion valida"<<endl;
+          system("pause");
 		}
 	}while(opcion!=0);
 
