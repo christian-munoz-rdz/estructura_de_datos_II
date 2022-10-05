@@ -1,11 +1,15 @@
 #include "Node.h"
 
 class Btree{
-public:
+private:
     Node* root;
+public:
 
     Btree();
     ~Btree();
+
+    Node* getRoot();
+    void setRoot(Node*);
 
     void insertRoot(string,string,string,float);
     void insert(string,string,string,float,Node*);
@@ -36,6 +40,15 @@ public:
 Btree::Btree(){
     root = NULL;
 }
+
+Node* Btree::getRoot(){
+    return root;
+}
+
+void Btree::setRoot(Node* root){
+    this->root = root;
+}
+
 
 void Btree::insertRoot(string Name,string Code,string Career,float Grade){
     if (root){
@@ -145,14 +158,14 @@ void Btree::findPredSuc(Node* begin, Node*& pre, Node*& suc, float grade){
     if(begin->get_Student()->get_Grade() == grade){
         if (begin->get_Left()){
             Node* tmp = begin->get_Left();
-            while (tmp->get_Right()){
+            while (tmp->get_Right())
                 tmp = tmp->get_Right();
             pre = tmp ;
         }
 
         if (begin->get_Right()){
             Node* tmp = begin->get_Right();
-            while (tmp->get_Left()){
+            while (tmp->get_Left())
                 tmp = tmp->get_Left();
             suc = tmp ;
         }
@@ -173,45 +186,42 @@ Node* Btree::deleteNode(Node* root, float grade){
     if (!root)
         return root;
  
-    if (root->id > id) {
-        root->left = deleteNode(root->left, id);
+    if (grade < root->get_Student()->get_Grade()){
+        root->set_Left(deleteNode(root->get_Left(), grade));
         return root;
     }
-    else if (root->id < id) {
-        root->right = deleteNode(root->right, id);
+    else if (grade > root->get_Student()->get_Grade()){
+        root->set_Right(deleteNode(root->get_Right(), grade));
         return root;
     }
  
-    if (root->left == NULL) {
-        Node* temp = root->right;
+    if (!root->get_Left()) {
+        Node* tmp = root->get_Right();
         delete root;
-        return temp;
+        return tmp;
     }
-    else if (root->right == NULL) {
-        Node* temp = root->left;
+    else if (!root->get_Right()) {
+        Node* tmp = root->get_Left();
         delete root;
-        return temp;
+        return tmp;
     }
  
     else {
- 
+
         Node* succParent = root;
- 
-        Node* succ = root->right;
-        while (succ->left != NULL) {
+        Node* succ = root->get_Right();
+
+        while (succ->get_Left()) {
             succParent = succ;
-            succ = succ->left;
+            succ = succ->get_Left();
         }
  
         if (succParent != root)
-            succParent->left = succ->right;
+            succParent->set_Left(succ->get_Right());
         else
-            succParent->right = succ->right;
+            succParent->set_Right(succ->get_Right());
  
-        root->id = succ->id;
-        root->name = succ->name;
-        root->direction = succ->direction;
-        root->email = succ->email;
+        root->set_Student(succ->get_Student());
  
         delete succ;
         return root;
@@ -220,9 +230,8 @@ Node* Btree::deleteNode(Node* root, float grade){
 
 void Btree::inOrderPrintRoot(){
     
-    if (root){
+    if(root){
         inOrderPrint(root);
-        cout << "\n";
     }
     else
         cout<<"Arbol vacio"<<endl;
@@ -231,17 +240,16 @@ void Btree::inOrderPrintRoot(){
 }
 
 void Btree::inOrderPrint(Node* leaf){
-    if (leaf!=NULL){
-        inOrderPrint(leaf->left);
+    if (leaf){
+        inOrderPrint(leaf->get_Left());
         leaf->show();
-        inOrderPrint(leaf->right);
+        inOrderPrint(leaf->get_Right());
     }
 }
 
 void Btree::preOrderPrintRoot(){
     if (root){
-        preOrderPrint(root);
-        cout<<"\n";        
+        preOrderPrint(root);        
     }
     else
         cout<<"Arbol vacio"<<endl;
@@ -249,10 +257,10 @@ void Btree::preOrderPrintRoot(){
 }
 
 void Btree::preOrderPrint(Node* leaf){
-    if (leaf!=NULL){
+    if (leaf){
         leaf->show();
-        inOrderPrint(leaf->left);
-        inOrderPrint(leaf->right);
+        inOrderPrint(leaf->get_Left());
+        inOrderPrint(leaf->get_Right());
     }
     
 }
@@ -261,7 +269,6 @@ void Btree::postOrderPrintRoot(){
 
     if (root){
         postOrderPrint(root);
-        cout<<"\n";
     }
     else
         cout<<"Arbol vacio"<<endl;
@@ -271,8 +278,8 @@ void Btree::postOrderPrintRoot(){
 void Btree::postOrderPrint(Node* leaf){
     
     if (leaf != NULL){
-        inOrderPrint(leaf->left);
-        inOrderPrint(leaf->right);
+        inOrderPrint(leaf->get_Left());
+        inOrderPrint(leaf->get_Right());
         leaf->show();
     }
 }
