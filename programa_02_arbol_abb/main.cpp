@@ -41,6 +41,7 @@ int main(){
         break;
       case 2:
         system("cls");
+        aux = NULL;
         cout << "\n\n BUSCAR NODO \n\n";
         cout << "Ingrese el codigo del estudiante: "; getline(cin,code);
         tree->search(tree->getRoot(),code,aux);
@@ -81,6 +82,7 @@ int main(){
         }
 			  case 5:
             system("cls");
+            aux = NULL;
             cout << "\n\n ELIMINAR NODO \n\n";
             cout << "Ingrese el codigo del estudiante a eliminar: "; getline(cin,code);
             tree->search(tree->getRoot(),code,aux);
