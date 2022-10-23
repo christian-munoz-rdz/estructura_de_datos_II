@@ -1,108 +1,79 @@
-#include <iostream>
+#include "Vertice_Arista.h"
+#include <string>
+#include <fstream>
 #include <queue>
 #include <list>
 #include <stack>
 
-using namespace std;
-
-class Vertice;
-
-//Clase Grafo solo tiene un atributo que es una lista de vertices
 class Grafo{
-    Vertice *h;
+    Vertice* h;
 public:
-    //Meodos de un grafo
-    void Inicializa();
+    Grafo();
     bool Vacio();
-    int Tamanio();
-    Vertice *GetVertice(string nombre);
-    void InsertarArista(Vertice *origen, Vertice *destino, string peso);
-    void InsertaVertice(string nombre);
-    void ListaAdyacencia();
-    void EliminarArista(Vertice *origen, Vertice *destino);
+    int Tamano();
+
+    Vertice* GetVertice(string);
+
+    void InsertarArista(Vertice*, Vertice*);
+    void InsertaVertice(Persona*);
+    
+    void EliminarArista(Vertice*, Vertice*);
+    void EliminarVertice(Vertice*);
     void Anular();
-    void EliminarVertice(Vertice *vert);
 
-    string MostrarPeso(Vertice *origen, Vertice *destino);
+    void Mostrar();
 
+    string to_string();
+    void Save();
+    
+    void Fields_vert(string);
+    void Fields_ar(string,string);
+    void Load();
 };
 
-class Vertice{
-    Vertice *sig;
-    Arista *ady;
-    string nombre;
-    friend class Grafo;
-
-};
-
-class Arista{
-    Arista *sig;
-    Vertice *ady;
-    string peso;
-    friend class Grafo;
-
-};
-
-//Metodo para inicializar el grafo
-void Grafo::Inicializa(){
-    h=nullptr;
+Grafo::Grafo(){
+    h=NULL;
 }
 
-//Metodo para saber si el grafo esta vacio
-bool Grafo::Vacio()
-{
-    if(h==nullptr){
-        return true;
-    }
-    else{
-        return false;
-    }
+bool Grafo::Vacio(){
+    return h==NULL;
 }
 
-//Metodo para saber el tamaño del grafo
-int Grafo::Tamanio()
-{
-    Vertice *aux;
-    int tamanio=0;
+int Grafo::Tamano(){
+    Vertice* aux;
+    int tamano=0;
     aux=h;
-    while(aux!=nullptr){
-        tamanio++;
+    while(aux!=NULL){
+        tamano++;
         aux=aux->sig;
     }
-    return tamanio;
+    return tamano;
 }
 
-//Retorna un vertica del grafo
-Vertice* Grafo::GetVertice(string nombre)
-{
-    Vertice *aux;
+Vertice* Grafo::GetVertice(string usuario){
+    Vertice* aux;
     aux=h;
-    while(aux != nullptr){
-        if(nombre==aux->nombre){
+    while(aux != NULL){
+        if(usuario==aux->amigo->getUsuario()){
             return aux;
         }
         aux=aux->sig;
     }
-    return nullptr;
+    return NULL;
 }
 
-//Metodo para insertar una arista en el grafo
-void Grafo::InsertarArista(Vertice* origen, Vertice* destino, string peso)
-{
-    Arista *nueva= new Arista;
-    nueva->peso=peso;
-    nueva->sig=nullptr;
-    nueva->ady=nullptr;
+void Grafo::InsertarArista(Vertice* origen, Vertice* destino){
+    Arista* nueva = new Arista();
 
-    Arista *aux;
+    Arista* aux;
 
     aux=origen->ady;
-    if(aux==nullptr){
+    if(aux==NULL){
         origen->ady=nueva;
         nueva->ady=destino;
     }
     else{
-        while(aux->sig!=nullptr){
+        while(aux->sig!=NULL){
             aux=aux->sig;
         }
         aux->sig=nueva;
@@ -111,19 +82,13 @@ void Grafo::InsertarArista(Vertice* origen, Vertice* destino, string peso)
 
 }
 
-//Metodo para insertar un vertice en el grafo
-void Grafo::InsertaVertice(string nombre)
-{
-    Vertice *nuevo= new Vertice;
-    nuevo->nombre=nombre;
-    nuevo->sig=nullptr;
-    nuevo->ady=nullptr;
+void Grafo::InsertaVertice(Persona* amigo){
+    Vertice* nuevo= new Vertice(amigo);
 
-    if(Vacio()){
+    if(Vacio())
         h=nuevo;
-    }
     else{
-        Vertice *aux=h;
+        Vertice* aux=h;
         while(aux->sig!=nullptr){
             aux=aux->sig;
         }
@@ -132,18 +97,16 @@ void Grafo::InsertaVertice(string nombre)
 
 }
 
-//Metodo para recorrer el grafo y mostrar la lista de adyacencia
-void Grafo::ListaAdyacencia()
-{
-    Vertice *VertAux;
-    Arista *ArisAux;
-
+void Grafo::Mostrar(){
+    Vertice* VertAux;
+    Arista* ArisAux;
+    
     VertAux=h;
-    while (VertAux!=nullptr){
-        cout<<VertAux->nombre<<"->";
-        ArisAux=VertAux->ady;
-        while(ArisAux!=nullptr){
-            cout<<ArisAux->ady->nombre<<"->";
+    while (VertAux!=NULL){
+        cout<<VertAux->amigo->getNombre() << " Sigue a: ";
+        ArisAux= VertAux->ady;
+        while(ArisAux!=NULL){
+            cout<< ArisAux->ady->amigo->getUsuario() <<", ";
             ArisAux=ArisAux->sig;
         }
         VertAux=VertAux->sig;
@@ -151,15 +114,15 @@ void Grafo::ListaAdyacencia()
     }
 }
 
-//Metodo para eliminar una arista del grafo
 void Grafo::EliminarArista(Vertice* origen, Vertice* destino)
 {
-    int band=0;
-    Arista *actual, *anterior;
+    bool encontrado = false;
+    Arista* actual;
+    Arista* anterior;
 
     actual=origen->ady;
 
-    if(origen == nullptr){
+    if(origen == NULL){
         cout<<"El vertice origen no tiene aristas"<<endl;
     }
     else{
@@ -168,45 +131,42 @@ void Grafo::EliminarArista(Vertice* origen, Vertice* destino)
             delete actual;
         }
         else{
-            while(actual!=nullptr){
+            while(actual!=NULL){
                 if(actual->ady==destino){
-                    band=1;
-                     anterior->sig=actual->sig;
+                    encontrado=true;
+                    anterior->sig=actual->sig;
                     delete actual;
                     break;
                 }
                 anterior=actual;
                 actual=actual->sig;
             }
-            if(band==0){
-                cout<<"Esos dos vertices no estan conectados"<<endl;
+            if(!encontrado){
+                cout<<"Relacion no encontrada"<<endl;
             }
         }
     }
 
 }
 
-//Metodo para anular el grafo
-void Grafo::Anular()
-{
+void Grafo::Anular(){
     Vertice *aux;
-    while(h!=nullptr){
+    while(h!=NULL){
         aux=h;
         h=h->sig;
         delete aux;
     }
-
 }
 
-//Metodo para eliminar un vertice del grafo
 void Grafo::EliminarVertice(Vertice* vert)
 {
-    Vertice *actual, *anterior;
+    Vertice* actual;
+    Vertice* anterior;
     Arista *aux;
     actual=h;
-    while(actual!=nullptr){
+    while(actual!=NULL){
         aux=actual->ady;
-        while(aux!=nullptr){
+        while(aux!=NULL){
             if(aux->ady==vert){
                 EliminarArista(actual,aux->ady);
                 break;
@@ -221,9 +181,9 @@ void Grafo::EliminarVertice(Vertice* vert)
         delete actual;
     }
     else{
-    while(actual!=vert){
-        anterior=actual;
-        actual=actual->sig;
+        while(actual!=vert){
+            anterior=actual;
+            actual=actual->sig;
         }
         anterior->sig=actual->sig;
         delete actual;
@@ -231,24 +191,141 @@ void Grafo::EliminarVertice(Vertice* vert)
 
 }
 
-//Metodo para mostrar el peso de una arista
-string Grafo::MostrarPeso(Vertice* origen, Vertice* destino){
-    Vertice *aux=h;
-    Arista *aris;
-    while(aux!=nullptr){
-        if(aux==origen){
-            aris=aux->ady;
-            while(aris->ady!=nullptr){
-                    if(aris->ady==destino){
-                        return aris->peso;
-                    }
-                aris=aris->sig;
-            }
-        }
-        aux=aux->sig;
+
+string Grafo::to_string(){
+    string data;
+    Vertice* VertAux;
+    Arista* ArisAux;
+
+    VertAux=h;
+    while(VertAux!=NULL){
+        data += VertAux->save_persona();
+        VertAux=VertAux->sig;
     }
 
+    data+='\n';
 
-    return 0;
+    VertAux=h;
+    while(VertAux!=NULL){
+        ArisAux= VertAux->ady;
+        while(ArisAux!=NULL){
+            data += ArisAux->ady->save_persona();
+            ArisAux=ArisAux->sig;
+        }
+        VertAux=VertAux->sig;
+        data+='\n';
+    }
+    return data;
 }
 
+void Grafo::Save(){
+    string text = to_string(); 
+
+    ofstream file; 
+    file.open("file01.txt",ios::out); 
+
+    if(file.fail()){ 
+        cout<<"No se pudo abrir el archivo"<<endl; 
+        exit(1); 
+    }
+    file<<text; 
+    file.close(); 
+}
+
+void Grafo::Fields_vert(string record){ 
+    int i=0; 
+
+    string nombre = ""; 
+
+    while(record[i] != '|'){
+        nombre += record[i]; 
+        i++;
+    } 
+    
+    i++;
+    string usuario = "";  
+    
+    while(record[i] != '|'){
+        usuario += record[i]; 
+        i++;
+    }
+    InsertaVertice(new Persona(nombre,usuario));
+}
+
+void Grafo::Fields_ar(string record1, string origen){ 
+    int i=0; 
+
+    string nombre = ""; 
+
+    while(record1[i] != '|'){
+        nombre += record1[i]; 
+        i++;
+    } 
+    
+    i++;
+    string usuario = "";  
+    
+    while(record1[i] != '|'){
+        usuario += record1[i]; 
+        i++;
+    }
+    Vertice* origen_ = GetVertice(origen);
+    Vertice* destino = GetVertice(usuario);
+
+    InsertarArista(origen_,destino);
+}
+
+
+void Grafo::Load(){
+
+    ifstream file;
+
+    file.open("file01.txt",ios::in);
+
+    if(file.is_open()){
+        string line;
+        int index = 0;
+        int length;
+        int i;
+        string record;
+        Vertice* aux;
+        while (getline(file, line)){
+            length = line.length();
+            i = 0;
+            record = "";
+            if(index < 1){
+                while(i<length){ 
+                    if(line[i]!='*'&&line[i]!='\n'){
+                        record+=line[i];
+                    }
+                    else{ 
+                        Fields_vert(record);
+                        record="";
+                    }
+                    i++;
+                }
+                aux = h;
+            }
+            else{
+                string origen = aux->amigo->getUsuario();
+                while(i<length){ 
+                    if(line[i]!='*'&&line[i]!='\n'){
+                        record+=line[i];
+                    }
+                    else{ 
+                        Fields_ar(record,origen);
+                        record="";
+                    }
+                    i++;
+                }
+                aux = aux->sig;
+            }
+            index++;
+        }
+
+        file.close();
+    }
+    else{
+        return;
+    }
+}
