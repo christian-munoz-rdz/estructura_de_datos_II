@@ -1,4 +1,5 @@
 #include "producto.h"
+
 class TablaHash{
     static const size_t tamanioTabla = 10;
     list<pair<size_t, Producto>> tabla[tamanioTabla];
@@ -37,7 +38,7 @@ void TablaHash::insertar(size_t key, Producto valor){
         if(iterador->first == key){
             existeLlave = true;
             iterador->second = valor;
-            cout<<"Ya existe esa llave. Se reemplazo el producto"<<endl;
+            cout<<"Ya existe esa llave. Se reemplazo el producto."<<endl;
             break;
         }
     }
@@ -48,7 +49,7 @@ void TablaHash::insertar(size_t key, Producto valor){
 
 void TablaHash::eliminar(size_t key){
     if(isEmpty()){
-        cout<<"Tabla vacia"<<endl;
+        cout<<"Tabla vacia..."<<endl;
     }
     size_t llaveHasheada = funcionHash(key);
     auto &celda = tabla[llaveHasheada];
@@ -57,18 +58,18 @@ void TablaHash::eliminar(size_t key){
         if(iterador->first == key){
             existeLlave = true;
             iterador = celda.erase(iterador);
-            cout<<"Se elimino con exito el producto"<<endl;
+            cout<<"Se elimino con exito el producto."<<endl;
             break;
         }
     }
     if(!existeLlave){
-        cout<<"No existe esa llave"<<endl;
+        cout<<"No existe esa llave."<<endl;
     }
 }
 
 void TablaHash::buscar(size_t key){
     if(isEmpty()){
-        cout<<"Tabla vacia"<<endl;
+        cout<<"Tabla vacia."<<endl;
     }
     size_t llaveHasheada = funcionHash(key);
     auto &celda = tabla[llaveHasheada];
@@ -82,13 +83,13 @@ void TablaHash::buscar(size_t key){
         }
     }
     if(!existeLlave){
-        cout<<"No existe esa llave"<<endl;
+        cout<<"No existe esa llave."<<endl;
     }
 }
 
 void TablaHash::imprimir(){
     if(isEmpty()){
-        cout<<"Tabla vacia"<<endl;
+        cout<<"Tabla vacia."<<endl;
     }
     for(size_t i=0;i<tamanioTabla;i++){
         if(tabla[i].size()==0){
@@ -107,7 +108,7 @@ void TablaHash::guardar(){
     string paisAux, nombreAux;
     fstream archivo("file01.txt",ios::binary | ios::out | ios::trunc);
     if(!archivo.is_open()){
-        cout<<"Error al abrir el archivo"<<endl;
+        cout<<"Error al abrir el archivo."<<endl;
     }else{
         if(isEmpty()){
             return;

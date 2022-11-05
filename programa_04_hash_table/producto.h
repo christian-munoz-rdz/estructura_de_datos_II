@@ -29,12 +29,12 @@ Producto::Producto(){
 }
 
 Producto::Producto(bool flag){
-    cout<<"Ingrese el precio del producto"<<endl;
+    cout<<"Ingrese el precio del producto: ";
     cin>>precio;
-    cout<<"Ingrese el pais del producto"<<endl;
+    cout<<"Ingrese el pais del producto: ";
     cin.ignore();
     getline(cin, pais);
-    cout<<"Ingrese el nombre del producto"<<endl;
+    cout<<"Ingrese el nombre del producto: ";
     getline(cin, nombre);
 }
 
